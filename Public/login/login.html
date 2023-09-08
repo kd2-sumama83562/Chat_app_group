@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="../css/login.css"> -->
+    <title>login</title>
+</head>
+<body>
+    <form class="mt-lg-5 py-lg-5" id="form-kj" onsubmit="login(event)">
+        
+    <div class="container mt-lg-5 px-lg-5" id="frm"> 
+
+     <!--  <div class="row-cols-md-4 mt-5">  -->
+        <div class="form-group mt-lg-5 px-lg-5">
+          <div>
+           <label for="email">Enter your email:</label>
+          </div>
+          <input type="email" class="form-control-sm" name="email" required />
+        </div>
+        <div class="form-group  px-lg-5">
+          <div>
+            <label for="password">Enter password:</label>
+          </div>
+          <input type="password" class="form-control-sm" name="password" required />
+        </div>
+        <div class="form-group  px-lg-5">
+         <button class="btn btn-primary btn-sm">Login</button>
+         <button class="btn btn-outline-primary btn-sm" onclick="signUpNew()">Sign up</button>
+        </div>
+       
+      </div>
+  </div>
+    </form>
+    <!-- <button class="btn btn-outline-primary btn-sm" onclick="forgotpassword()"> Forgot password</button>
+    <button class="btn btn-outline-primary btn-sm" onclick="signUpNew()">Sign up</button>
+    <a href="../html/signup.html">New User - Signup Now</a> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./login.js" ></script>
+</body>
+</html>
