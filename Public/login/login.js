@@ -13,7 +13,7 @@ function login(e) {
         if(response.status === 200){
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userDetails', JSON.stringify(response.data.user))
-            // window.location.href = "../html/expesneHome.html" // change the page on successful login
+            window.location.href = "../home/homepage.html" // change the page on successful login
         } else {
             throw new Error('Failed to login')
         }
