@@ -38,13 +38,32 @@ function decodeToken(token) {
 
 async function getMessages() {
   try {
-    const res = await axios.get("http://localhost:3000/chat/getMessages");
+    // const res = await axios.get("http://localhost:3000/chat/getMessages");
+
+    let param;
+    const localStorageChats = JSON.parse(localStorage.getItem("chats"));
+    if (localStorageChats) {
+      let array = JSON.parse(localStorage.getItem("chats"));
+      let length = JSON.parse(localStorage.getItem("chats")).length;
+      param = array[length - 1].id;
+    }
+    const res = await axios.get(
+      `http://localhost:3000/chat/getMessages/${param}`
+    );
+
     const token = localStorage.getItem("token");
     const decodedToken =  decodeToken(token);
-    // console.log(decodeToken.userId,"decode Token")
     const userId = decodedToken.userId;
-    chatBody.innerHTML = "";
-    console.log(res.data.messages);
+
+    const chats = JSON.parse(localStorage.getItem("chats"));
+    if (!chats) {
+      localStorage.setItem("chats", JSON.stringify(res.data.messages));
+    } else {
+      res.data.messages.forEach((message) => {
+        chats.push(message);
+      });
+      localStorage.setItem("chats", JSON.stringify(chats));
+    }
     res.data.messages.forEach((message) => {
       if (message.userId == userId) {
         const div = document.createElement("div");
@@ -72,13 +91,7 @@ async function getMessages() {
         chatBody.appendChild(div);
 
         const messageSendby = document.createElement("span");
-        messageSendby.classList.add("d-flex",
-          "justify-content-start",
-          "px-3",
-          "mb-1",
-          "text-uppercase",
-          "small",
-          "text-white"
+        messageSendby.classList.add("d-flex","justify-content-start", "px-2","mb-1","text-uppercase","small","text-white"
         );
         messageSendby.appendChild(document.createTextNode(message.name));
         div.appendChild(messageSendby);
@@ -101,5 +114,79 @@ async function getMessages() {
 }
 setInterval(() => {
   getMessages();
-}, 1000);
+}, 4000);
 document.addEventListener("DOMContentLoaded", getMessages);
+
+
+
+
+// get message from local storage
+async function messagesFromLocalStorage() {
+  const messages = JSON.parse(localStorage.getItem("chats"));
+
+  const token = localStorage.getItem("token");
+  const decodedToken = decodeToken(token);
+  const userId = decodedToken.userId;
+  chatBody.innerHTML = "";
+
+  if (messages) {
+    messages.forEach((message) => {
+      if (message.userId == userId) {
+        const div = document.createElement("div");
+        chatBody.appendChild(div);
+
+        const messageSendby = document.createElement("span");
+        messageSendby.classList.add(
+          "d-flex",
+          "justify-content-end",
+          "px-3",
+          "mb-1",
+          "text-uppercase",
+          "small",
+          "text-white"
+        );
+        messageSendby.appendChild(document.createTextNode("You"));
+        div.appendChild(messageSendby);
+
+        const messageBox = document.createElement("div");
+        const messageText = document.createElement("div");
+
+        messageBox.classList.add("d-flex", "justify-content-end", "mb-4");
+
+        messageText.classList.add("msg_cotainer_send");
+        messageText.appendChild(document.createTextNode(message.message));
+
+        messageBox.appendChild(messageText);
+        div.appendChild(messageBox);
+      } else {
+        const div = document.createElement("div");
+        chatBody.appendChild(div);
+
+        const messageSendby = document.createElement("span");
+        messageSendby.classList.add(
+          "d-flex",
+          "justify-content-start",
+          "px-3",
+          "mb-1",
+          "text-uppercase",
+          "small",
+          "text-white"
+        );
+        messageSendby.appendChild(document.createTextNode(message.name));
+        div.appendChild(messageSendby);
+
+        const messageBox = document.createElement("div");
+        const messageText = document.createElement("div");
+
+        messageBox.classList.add("d-flex", "justify-content-start", "mb-4");
+
+        messageText.classList.add("msg_cotainer");
+        messageText.appendChild(document.createTextNode(message.message));
+
+        messageBox.appendChild(messageText);
+        div.appendChild(messageBox);
+      }
+    });
+  }
+}
+document.addEventListener("DOMContentLoaded", messagesFromLocalStorage);
