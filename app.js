@@ -3,11 +3,12 @@ const express = require('express');
 var cors = require('cors')
 
 const sequelize = require('./util/database');
-
-
-
-
 const userRoutes = require('./router/userRouter')
+const chatRouter = require("./router/chatRouter");
+
+
+const User = require("./models/userModel");
+const Chat = require("./models/chat");
 
 
 const app = express();
@@ -24,7 +25,12 @@ app.use(express.static("Public"));
 
 
 app.use('/user', userRoutes)
+app.use("/chat", chatRouter);
 
+
+
+User.hasMany(Chat);
+Chat.belongsTo(User);
 
 
 

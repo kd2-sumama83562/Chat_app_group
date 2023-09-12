@@ -50,7 +50,7 @@ const login = async (req, res) => {
           if (response) {
             console.log(JSON.stringify(user));
             const jwttoken = await generateAccessToken(user[0].id);
-            res.json({ token: jwttoken, success: true, message: 'Successfully Logged In' });
+            res.json({ token: jwttoken, success: true, message: 'Successfully Logged In', email: email });
           } else {
             return res.status(401).json({ success: false, message: 'Passwords do not match' });
           }

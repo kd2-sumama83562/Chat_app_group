@@ -12,7 +12,8 @@ function login(e) {
     axios.post('http://localhost:3000/user/login',loginDetails).then(response => {
         if(response.status === 200){
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('userDetails', JSON.stringify(response.data.user))
+            localStorage.setItem('email', response.data.email);
+           
             window.location.href = "../home/homepage.html" // change the page on successful login
         } else {
             throw new Error('Failed to login')
@@ -26,6 +27,6 @@ function login(e) {
 //     window.location.href = "../html/forgetPassword.html"
 //   }
   function signUpNew() {
-      window.location.href = "../html/signup.html"
+      window.location.href = "../signup/signup.html"
   }
   

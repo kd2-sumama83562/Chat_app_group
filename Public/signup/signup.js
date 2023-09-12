@@ -14,7 +14,9 @@ function signup(e) {
     axios.post('http://localhost:3000/user/signup',signupDetails).then(response => {
       console.log(response);
         if(response.status === 201){
-            window.location.href = "../html/login.html"  // change the page on successful login
+            localStorage.setItem('name',signupDetails.name);
+            
+            window.location.href = "../login/login.html"  // change the page on successful login
         } else {
             throw new Error('Failed to login')
         }
