@@ -60,6 +60,8 @@
             <div class="card-body contacts_body">
               <ui class="contacts" id="groups">
                 
+
+
               </ui>
             </div>
             <div class="card-footer"></div>
@@ -70,12 +72,13 @@
             <div class="card-header msg_head">
                <div class="d-flex bd-highlight">
                 <div class="user_info" id="groupNameHeading">
+
                 </div>
               </div>
               <span id="action_menu_btn"
                 ><i class="fas fa-ellipsis-v"></i
               ></span>
-              <!--<div class="action_menu">
+              <div class="action_menu">
                 <ul>
                   <li id="groupMembers">
                     <i class="fas fa-users"></i>Group Members
@@ -91,7 +94,7 @@
                   </li>
                   <li id="logout"><i class="fas fa-lock"></i>LogOut</li>
                 </ul>
-              </div> -->
+              </div>
             </div>
             <div class="card-body msg_card_body" id="chatBody">
           
@@ -120,9 +123,6 @@
       </div>
     </div>
   </body>
- 
- 
-  <script src="./chathome.js"></script>
   <script>
     $(document).ready(function () {
       $("#action_menu_btn").click(function () {
@@ -130,4 +130,7 @@
       });
     });
   </script>
+
+   <script src="./chathome.js"></script>
+   <script src="../group/group.js"></script>
 </html>

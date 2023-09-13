@@ -3,9 +3,10 @@ const User = require("../models/userModel");
 
 const authenticate = (req, res, next) => {
   try {
-    const token = req.header("Authorization");
-    console.log('Token:', token);
+    const token =  req.header("Authorization");
+    console.log("Token", token);
     const user = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log(user, "9 auth");
     User.findByPk(user.userId).then((user) => {
       req.user = user;
       next();

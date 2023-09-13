@@ -1,16 +1,46 @@
 const messageTextArea = document.getElementById("messageTextArea");
 const SendBtn = document.getElementById("messageSendBtn");
 const chatBody = document.getElementById("chatBody");
+const uiGroup = document.getElementById("groups");
+const groupNameHeading = document.getElementById("groupNameHeading");
+
+async function activeGroup(e) {
+  chatBody.innerHTML = "";
+  localStorage.setItem("chats", JSON.stringify([]));
+  groupNameHeading.innerHTML = "";
+  const activeLi = document.getElementsByClassName("active");
+  if (activeLi.length != 0) {
+    activeLi[0].removeAttribute("class", "active");
+  }
+  let li = e.target;
+  while (li.tagName !== "LI") {
+    li = li.parentElement;
+  }
+  li.setAttribute("class", "active");
+  const groupName = li.querySelector("span").textContent;
+  localStorage.setItem("groupName", groupName);
+  const span = document.createElement("span");
+  span.appendChild(document.createTextNode(groupName));
+  groupNameHeading.appendChild(span);
+  setInterval(() => {
+    getMessages();
+  }, 5000);
+}
 
 async function mesgSend() {
-
   try {
     
     const message = messageTextArea.value;
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     console.log(token);
-    const res = await axios.post("http://localhost:3000/chat/sendMessage",{ message: message, email:email, },
+
+    const groupName = localStorage.getItem("groupName");
+    if (!groupName || groupName == "") {
+      return alert("Select group to send the message");
+    }
+    const res = await axios.post("http://localhost:3000/chat/sendMessage",{ 
+      message: message, email:email, groupName: groupName,},
       { headers: { Authorization: token } }
     );
     messageTextArea.value = "";
@@ -39,16 +69,22 @@ function decodeToken(token) {
 async function getMessages() {
   try {
     // const res = await axios.get("http://localhost:3000/chat/getMessages");
-
+    const groupName = localStorage.getItem("groupName");
+    if (!groupName || groupName == "") {
+      return alert("Select group to get the message");
+    }
     let param;
     const localStorageChats = JSON.parse(localStorage.getItem("chats"));
-    if (localStorageChats) {
+    if (localStorageChats && localStorageChats.length !== 0) {
       let array = JSON.parse(localStorage.getItem("chats"));
       let length = JSON.parse(localStorage.getItem("chats")).length;
       param = array[length - 1].id;
     }
+    else {
+      param = 0;
+    }
     const res = await axios.get(
-      `http://localhost:3000/chat/getMessages/${param}`
+      `http://localhost:3000/chat/getMessages?param=${param}&groupName=${groupName}`
     );
 
     const token = localStorage.getItem("token");
@@ -112,9 +148,7 @@ async function getMessages() {
     console.log(error);
   }
 }
-setInterval(() => {
-  getMessages();
-}, 4000);
+
 document.addEventListener("DOMContentLoaded", getMessages);
 
 
@@ -189,4 +223,11 @@ async function messagesFromLocalStorage() {
     });
   }
 }
-document.addEventListener("DOMContentLoaded", messagesFromLocalStorage);
+// document.addEventListener("DOMContentLoaded", messagesFromLocalStorage);
+
+uiGroup.addEventListener("click", activeGroup);
+
+document.addEventListener("DOMContentLoaded", () => {
+  localStorage.setItem("groupName", "");
+  localStorage.setItem("chats", JSON.stringify([]));
+});
