@@ -52,6 +52,13 @@ exports.addToGroup = async (req, res, next) => {
     const groupName = req.body.groupName;
     const members = req.body.members;
 
+    const email = req.body.email;
+    console.log(email, " email 56 add to Group");
+    const user = await User.findAll({ where: { email } });
+    console.log(user[0].dataValues.id, " user[0].dataValues.id ");
+    const Iduser = user[0].dataValues.id;
+
+
     const group = await Group.findOne({ where: { name: groupName } });
     if (group) {
       const admin = await UserGroup.findOne({
@@ -59,7 +66,7 @@ exports.addToGroup = async (req, res, next) => {
           [Op.and]: [{ isadmin: 1 }, { groupId: group.id }],
         },
       });
-      if (admin.userId == req.user.id) {
+      if (admin.userId == Iduser) {
         const invitedMembers = await User.findAll({
           where: {
             email: {
@@ -110,5 +117,87 @@ exports.getGroups = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     
+  }
+};
+//
+exports.deleteFromGroup = async (req, res, next) => {
+  try {
+    
+    const groupName = req.body.groupName;
+    const members = req.body.members;
+
+    const email = req.body.email;
+    console.log(email, " email 123 del Group");
+    const user = await User.findAll({ where: { email } });
+    console.log(user[0].dataValues.id, " user[0].dataValues.id ");
+    const Iduser = user[0].dataValues.id;
+
+    const group = await Group.findOne({ where: { name: groupName } });
+    if (group) {
+      const admin = await UserGroup.findOne({
+        where: {
+           [Op.and]:  [{ isadmin: 1 }, { groupId: group.id }],
+        },
+      });
+  
+      console.log(admin, "admin 134 ====================")
+      if (admin.userId == Iduser) {
+        const invitedMembers = await User.findAll({
+          where: {
+            email: {
+              [Op.or]: members,
+            },
+          },
+        });
+
+        await Promise.all(
+          invitedMembers.map(async (user) => {
+            const response = await UserGroup.destroy({
+              where: {
+                [Op.and]: [
+                  {
+                    isadmin: false,
+                    userId: user.dataValues.id,
+                    groupId: group.dataValues.id,
+                  },
+                ],
+              },
+            });
+          })
+        );
+        res.status(201).json({ message: "Members Deleted Successfully!" });
+      } else {
+        res.status(201).json({ message: "Only Admins Can Delete Members" });
+      }
+    } else {
+      res.status(201).json({ message: "Group doesn't exists!" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.groupMembers = async (req, res, next) => {
+  try {
+    const groupName = req.params.groupName;
+    const group = await Group.findOne({ where: { name: groupName } });
+    const userGroup = await UserGroup.findAll({
+      where: { groupId: group.dataValues.id },
+    });
+
+    const users = [];
+
+    await Promise.all(
+      userGroup.map(async (user) => {
+        const res = await User.findOne({
+          where: { id: user.dataValues.userId },
+        });
+        // console.log(res, "res 195")
+        users.push(res);
+      })
+    );
+    res.status(200).json({ users: users });
+  } catch (error) {
+    console.log(error);
   }
 };

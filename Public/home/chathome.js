@@ -24,11 +24,18 @@ async function activeGroup(e) {
   groupNameHeading.appendChild(span);
   setInterval(() => {
     getMessages();
-  }, 5000);
+  }, 10000);
 }
 
 async function mesgSend() {
   try {
+
+    if (chatBody.querySelector(".groupMembersDiv")) {
+      const members = chatBody.querySelectorAll(".groupMembersDiv");
+      members.forEach((member) => {
+        member.remove();
+      });
+    }
     
     const message = messageTextArea.value;
     const token = localStorage.getItem("token");
@@ -223,6 +230,7 @@ async function messagesFromLocalStorage() {
     });
   }
 }
+// chatBoxBody
 // document.addEventListener("DOMContentLoaded", messagesFromLocalStorage);
 
 uiGroup.addEventListener("click", activeGroup);
