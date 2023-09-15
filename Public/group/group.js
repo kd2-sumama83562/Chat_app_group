@@ -173,7 +173,7 @@ async function groupMembers() {
         "d-flex",
         "justify-content-center",
         "groupMembersDiv",
-        "text-black",
+        "text-white",
       );
       const p = document.createElement("p");
       p.appendChild(document.createTextNode(`${user.name} is Member`));

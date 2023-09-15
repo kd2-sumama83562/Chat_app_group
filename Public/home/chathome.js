@@ -126,7 +126,7 @@ async function getMessages() {
           "mb-1",
           "text-uppercase",
           "small",
-          "text-black"
+          "text-white"
         );
         messageSendby.appendChild(document.createTextNode(message.name));
         div.appendChild(messageSendby);
