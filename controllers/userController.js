@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
- const signup = (req, res)=>{
+const signup = (req, res)=>{
     const { name, email, number, password} = req.body;
     console.log(number);
     const saltRounds = 10;
@@ -68,5 +68,6 @@ const login = async (req, res) => {
 
 module.exports = {
     signup,
-    login
+    login,
+    
 }
