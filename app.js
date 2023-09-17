@@ -38,7 +38,7 @@ app.use('/', (req, res)=>{
         res.sendFile(path.join(__dirname, `${req.url}`));
     }
     catch(e){
-        console.log("er is from here 38 aap.js")
+        console.log("err is from here 41 aap.js")
     }
 })
 
@@ -59,6 +59,8 @@ UserGroup.belongsTo(User);
 UserGroup.belongsTo(Group);
 
 //
+const job = require("./jobs/cron");
+job.start();
 
 
 sequelize.sync()
@@ -67,4 +69,4 @@ sequelize.sync()
     })
     .catch(err => {
         console.log(err);
-    })
+})

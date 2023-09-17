@@ -42,7 +42,7 @@ async function getGroups() {
   try {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
-    console.log(token, email, "41 get group");
+    console.log(token, email, "45 get group");
     const res = await axios.get("http://localhost:3000/group/getGroups",
     //  {
     //     email1:email,

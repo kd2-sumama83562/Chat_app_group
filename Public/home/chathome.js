@@ -15,10 +15,12 @@ async function activeGroup(e) {
   localStorage.setItem("chats", JSON.stringify([]));
   groupNameHeading.innerHTML = "";
   const activeLi = document.getElementsByClassName("active");
+  
   if (activeLi.length != 0) {
     activeLi[0].removeAttribute("class", "active");
   }
   let li = e.target;
+ 
   while (li.tagName !== "LI") {
     li = li.parentElement;
   }
